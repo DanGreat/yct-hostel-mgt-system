@@ -1,0 +1,22 @@
+.app-auth-wrapper {
+    height: 100vh;
+    background: linear-gradient(121deg, #44a575, #093027);
+   
+
+    .logo-icon {
+        width: 150px;
+    }
+
+    .app-auth-body {
+        background-color: #fff;
+        padding: 2em;
+        min-width: 40%;
+        border-radius: 11px;
+    }
+}
+a {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #198754;
+}

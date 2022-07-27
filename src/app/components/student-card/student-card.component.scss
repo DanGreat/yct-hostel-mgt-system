@@ -1,0 +1,49 @@
+.card-front, .card-back {
+    padding: 10px;
+    background: #efefef;
+    border: 2px solid #989898;
+    border-radius: 8px;
+    width: 70%;
+    min-width: 70%;
+    height: 222px;
+    margin: 0 auto;
+
+    .student-info {
+        img {
+            width: 40%;
+            height: 75%;
+            display: block;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+
+        div {
+            p {
+                margin-bottom: 7px;
+            }
+        }
+        
+    }
+
+    .photo-qrcode {
+        .signature {
+            text-align: center;
+
+            i {
+                position: relative;
+                top: -15px;
+            }
+        }
+    }
+
+}
+
+.card-back {
+    padding-left: 0;
+    padding-right: 0;
+
+    .bar {
+        height: 30px;
+        background-color: green;
+    }
+}

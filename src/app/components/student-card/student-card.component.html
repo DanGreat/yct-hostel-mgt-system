@@ -1,0 +1,36 @@
+<div class="my-4">
+    <div class="card-front mt-4">
+        <div class="d-flex justify-content-between">
+            <div class="student-info d-flex">
+                <img [src]="studentData?.profile_picture" alt="" (error)="setDefault($event)">
+                <div>
+                    <p><strong>Name:</strong> {{ studentData?.user_detail?.first_name + ' ' +  studentData?.user_detail?.last_name | titlecase }}</p>
+                    <p><strong>Mat No.:</strong>{{  studentData?.matric_no | uppercase }}</p>
+                    <p><strong>Dept.:</strong> {{ studentData?.department | titlecase }}</p>
+                    <p><strong>Gender:</strong> {{ studentData?.gender | titlecase }}</p>
+                    <p><strong>Hostel:</strong> {{ studentData?.hostel | titlecase }}</p>
+                </div>
+            </div>
+    
+            <div class="photo-qrcode">
+                
+                <qrcode [qrdata]="matNo()" [width]="120" [allowEmptyString]="true" [errorCorrectionLevel]="'M'"></qrcode>
+    
+                <div class="signature mt-5">
+                    <hr>
+                    <i class="text-center">Signature</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-back mt-4 mb-4">
+        <div class="bar mt-4"></div>
+        <div class="card-info p-2">
+            <p class="text-center">
+                This card remains a property of the College and must be returned on request
+                to the Authority of the College
+            </p>
+        </div>
+    </div>
+</div>

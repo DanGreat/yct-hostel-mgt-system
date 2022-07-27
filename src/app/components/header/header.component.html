@@ -1,0 +1,14 @@
+<div class="d-flex justify-content-between header">
+    <div>
+      <h2>Welcome, {{ userData?.user_detail?.first_name }}</h2>
+    </div>
+    <div class="flex-shrink-0 dropdown">
+      <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+        <!-- profile_picture -->
+        <img [src]="userData?.profile_picture" (error)="setDefault($event)" alt="mdo" width="32" height="32" class="rounded-circle">
+      </a>
+      <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+        <li><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">Sign out</a></li>
+      </ul>
+    </div>
+  </div>
