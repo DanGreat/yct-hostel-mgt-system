@@ -9,12 +9,14 @@ import { YctServiceService } from 'src/app/yct-service.service';
   templateUrl: './hostels.component.html',
   styleUrls: ['./hostels.component.scss']
 })
+
 export class HostelsComponent implements OnInit {
 
-  hostels: any = {}
+  hostels: any = []
   hostel = ''
   id = null
   editedHostel: any = {}
+
   next: string = '';
 
   constructor(private yctService: YctServiceService,

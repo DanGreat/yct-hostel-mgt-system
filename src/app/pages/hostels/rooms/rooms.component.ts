@@ -16,14 +16,13 @@ export class RoomsComponent implements OnInit {
   hostel = null
   room = ''
   id = null
+
   editedRoom: any = {}
 
   next: string = '';
 
   constructor(private yctService: YctServiceService,
     private toastr: ToastrService,
-    private router: Router,
-    private route: ActivatedRoute,
     private loadingService: LoadingStateService) { }
 
   ngOnInit(): void {
@@ -78,6 +77,7 @@ export class RoomsComponent implements OnInit {
     }
 
     this.loadingService.showLoading()
+
     const body = {
       hostel: this.hostel,
       name: this.room
@@ -142,7 +142,6 @@ export class RoomsComponent implements OnInit {
   }
 
   selectHostel(ev: any) {
-    console.log('Host: ', ev.target.value);
     this.hostel = ev.target.value
   }
 
