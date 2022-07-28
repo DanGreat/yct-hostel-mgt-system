@@ -21,6 +21,7 @@ export class AdminsComponent implements OnInit {
     accountType: 'admin',
     profilePicture: ''
   }
+  next: string = '';
 
   constructor(private yctService: YctServiceService, 
               private loadingService: LoadingStateService,
@@ -30,16 +31,30 @@ export class AdminsComponent implements OnInit {
     this.getAdmins()
   }
 
-  getAdmins() {
-    this.yctService.getAdmins().subscribe({
+  getAdmins(url?: string) {
+    if(url) this.loadingService.showLoading()
+    this.yctService.getAdmins(url).subscribe({
       next: (data: any) => {
         console.log('Admin Registered: ', data);
-        this.admins = data?.results
+        this.next = data?.next
+
+        if(url) {
+          this.admins = this.admins.concat(data?.results)
+        } else {
+          this.admins = data?.results
+        }
+
+        if(url) this.loadingService.hideLoading()
       },
       error: (err) => {
+        if(url) this.loadingService.hideLoading()
         console.log('Admin Err: ', err);
       }
     })
+  }
+
+  loadMore() {
+    this.getAdmins(this.next)
   }
 
   getProfilePic(ev: any) {

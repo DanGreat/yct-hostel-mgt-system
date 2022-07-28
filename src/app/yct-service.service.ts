@@ -91,9 +91,10 @@ export class YctServiceService {
   }
 
   // Hostel Service Request
-  getHostels() {
+  getHostels(url?: string) {
+    const endpoint = (url) ? url : `${this.baseUrl}/hostels/`
     const headers = this.getHeaders();
-    return this.http.get(`${this.baseUrl}/hostels/`, { headers });
+    return this.http.get(endpoint, { headers });
   }
 
   createHostel(body: any) {
@@ -116,9 +117,10 @@ export class YctServiceService {
   }
 
   // Rooms Service Request
-  getRooms() {
+  getRooms(url?: string) {
+    const endpoint = (url) ? url : `${this.baseUrl}/rooms/`
     const headers = this.getHeaders();
-    return this.http.get(`${this.baseUrl}/rooms/`, { headers });
+    return this.http.get(endpoint, { headers });
   }
 
   createRoom(body: any) {
@@ -143,9 +145,10 @@ export class YctServiceService {
 
 
   // Admin Service Request
-  getAdmins() {
+  getAdmins(url?: string) {
+    const endpoint = (url) ? url : `${this.baseUrl}/admins/`
     const headers = this.getHeaders();
-    return this.http.get(`${this.baseUrl}/admins/`, { headers });
+    return this.http.get(endpoint, { headers });
   }
 
   registerAdmin(body: any) {

@@ -18,6 +18,8 @@ export class RoomsComponent implements OnInit {
   id = null
   editedRoom: any = {}
 
+  next: string = '';
+
   constructor(private yctService: YctServiceService,
     private toastr: ToastrService,
     private router: Router,
@@ -41,16 +43,31 @@ export class RoomsComponent implements OnInit {
     })
   }
 
-  getRooms() {
-    this.yctService.getRooms().subscribe({
+  getRooms(url?: string) {
+    if(url) this.loadingService.showLoading()
+
+    this.yctService.getRooms(url).subscribe({
       next: (data: any) => {
         console.log('Rooms: ', data)
-        this.rooms = data?.results
+        this.next = data?.next
+
+        if(url) {
+          this.rooms = this.rooms.concat(data?.results)
+        } else {
+          this.rooms = data?.results
+        }
+
+        if(url) this.loadingService.hideLoading()
       },
       error: (err) => {
+        if(url) this.loadingService.hideLoading()
         console.log('Roomms Err: ', err);
       }
     })
+  }
+
+  loadMore() {
+    this.getRooms(this.next)
   }
 
   addRoom() {

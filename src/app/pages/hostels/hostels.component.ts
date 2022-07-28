@@ -15,6 +15,7 @@ export class HostelsComponent implements OnInit {
   hostel = ''
   id = null
   editedHostel: any = {}
+  next: string = '';
 
   constructor(private yctService: YctServiceService,
               private toastr: ToastrService,
@@ -26,16 +27,31 @@ export class HostelsComponent implements OnInit {
     this.getHostels()
   }
 
-  getHostels() {
-    this.yctService.getHostels().subscribe({
+  getHostels(url?: string) {
+    if(url) this.loadingService.showLoading()
+    this.yctService.getHostels(url).subscribe({
       next: (data: any) => {
         console.log('Hostel: ', data)
-        this.hostels = data?.results
+        
+        this.next = data?.next
+
+        if(url) {
+          this.hostels = this.hostels.concat(data?.results)
+        } else {
+          this.hostels = data?.results
+        }
+
+        if(url) this.loadingService.hideLoading()
       },
       error: (err) => {
+        if(url) this.loadingService.hideLoading()
         console.log('Hostel Err: ', err);
       }
     })
+  }
+
+  loadMore() {
+    this.getHostels(this.next)
   }
 
   addHostel() {
