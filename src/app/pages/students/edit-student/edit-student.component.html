@@ -1,0 +1,102 @@
+<div class="container">
+
+    <h3>Edit Student Info</h3>
+    <form action="#" class="mt-5">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" [(ngModel)]="studentData.firstName" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="lastname" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" [(ngModel)]="studentData.lastName" required>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="studentData.email" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" maxlength="11" minlength="11" [(ngModel)]="studentData.phoneNumber" required>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="department" class="form-label">Department</label>
+                    <input type="text" class="form-control" id="department" name="department" [(ngModel)]="studentData.department" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="matric" class="form-label">Matric Number</label>
+                    <input type="text" class="form-control" id="matric" pattern="[a-zA-Z]?/[a-zA-Z]{2}/[0-9]{2}/[0-9]{7}" placeholder="F/ND/12/3210001" name="matno" [(ngModel)]="studentData.matricNo" required>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="department" class="form-label">School</label>
+                    <input type="text" class="form-control" id="school" name="school" [(ngModel)]="studentData.school" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Level</label>
+                    <select class="form-select" aria-label="Default select example" id="level" name="level" [(ngModel)]="studentData.level" required>
+                        <option value="" selected>-- Select Level --</option>
+                        <option value="ND">ND</option>
+                        <option value="HND">HND</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select class="form-select" aria-label="Default select example" id="gender" name="gender" [(ngModel)]="studentData.gender" required>
+                        <option value="" selected>-- Select Gender --</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="hostel" class="form-label">Hostel</label>
+                    <select class="form-select" aria-label="Default select example" id="hostel" name="hostel" required (change)="selectRoom($event)">
+                        <option value="">-- Select Hostel --</option>
+                        <option [value]="room?.id" *ngFor="let room of rooms;" [selected]="(room?.name === studentRoom)">{{ room?.name }}</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="file" class="form-label">Profile Picture</label>
+                    <input type="file" (change)="getProfilePic($event)" class="form-control" id="file" name="profile" required>
+                </div>
+            </div>
+        </div>
+    
+        <button type="button" class="btn btn-primary w-25 d-block mx-auto mt-4" (click)="updateStudent()">Update</button>
+    
+    </form>
+</div>
+

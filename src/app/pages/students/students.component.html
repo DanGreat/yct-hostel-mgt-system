@@ -37,7 +37,7 @@
                 <td>{{ student?.user_detail?.last_name | titlecase}}</td>
                 <td>{{ student?.department | titlecase }}</td>
                 <td>{{ student?.matric_no | uppercase }}</td>
-                <td>{{ student?.hostel | titlecase }}</td>
+                <td>{{ student?.room?.hostel_name | titlecase }}</td>
                 <td>
                     <button class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#view-student" (click)="viewStudent(student)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
@@ -46,12 +46,12 @@
                         </svg>
                         View
                     </button>
-                    <!-- <button class="btn btn-primary mx-1">
+                    <button class="btn btn-primary mx-1" (click)="editStudent(student)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
                             <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
                         </svg>
                         Edit
-                    </button> -->
+                    </button>
                     <button class="btn btn-danger" (click)="deleteStudent(student?.id)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                             <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
@@ -127,6 +127,25 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
+                                    <label for="department" class="form-label">School</label>
+                                    <input type="text" class="form-control" id="school" name="school" [(ngModel)]="studentData.school" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Level</label>
+                                    <select class="form-select" aria-label="Default select example" id="level" name="level" [(ngModel)]="studentData.level" required>
+                                        <option value="" selected>-- Select Level --</option>
+                                        <option value="ND">ND</option>
+                                        <option value="HND">HND</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-3">
                                     <label for="gender" class="form-label">Gender</label>
                                     <select class="form-select" aria-label="Default select example" id="gender" name="gender" [(ngModel)]="studentData.gender" required>
                                         <option value="" selected>-- Select Gender --</option>
@@ -137,10 +156,10 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label for="hostel" class="form-label">Hostel</label>
-                                    <select class="form-select" aria-label="Default select example" id="hostel" name="hostel" [(ngModel)]="studentData.hostelID" required>
-                                        <option value="" selected>-- Select Hostel --</option>
-                                        <option [value]="hostel?.id" *ngFor="let hostel of hostels;">{{ hostel?.name }}</option>
+                                    <label for="hostel" class="form-label">Room</label>
+                                    <select class="form-select" aria-label="Default select example" id="hostel" name="hostel" [(ngModel)]="studentData.roomID" required>
+                                        <option value="" selected>-- Select Room --</option>
+                                        <option [value]="room?.id" *ngFor="let room of rooms;">{{ room?.name }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -202,7 +221,7 @@
                 </div>
                 <div class="modal-body">
                     <img [src]="viewedStudent?.profile_picture" class="student-profile-img" alt="profile image" (error)="setDefault($event)">
-                    <div class="row">
+                    <div class="row mt-4">
                         <div class="col-lg-4">
                             <p>Firstname</p>
                             <p><strong>{{ viewedStudent?.user_detail?.first_name | titlecase }}</strong></p>
@@ -238,7 +257,21 @@
                         </div>
                         <div class="col-lg-4">
                             <p>Hostel</p>
-                            <p><strong>{{ viewedStudent?.hostel | titlecase }}</strong></p>
+                            <p><strong>{{ viewedStudent?.room?.hostel_name | titlecase }}</strong></p>
+                        </div>
+                        <div class="col-lg-4">
+                            <p>Room</p>
+                            <p><strong>{{ viewedStudent?.room?.room_name | titlecase }}</strong></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <p>Level</p>
+                            <p><strong>{{ viewedStudent?.level | uppercase }}</strong></p>
+                        </div>
+                        <div class="col-lg-4">
+                            <p>School</p>
+                            <p><strong>{{ viewedStudent?.school | titlecase }}</strong></p>
                         </div>
                     </div>
                     <app-student-card #viewedStudentCard [studentData]="viewedStudent"></app-student-card>

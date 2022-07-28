@@ -37,6 +37,11 @@ export class YctServiceService {
     return this.http.get(endpoint, { headers });
   }
 
+  getStudent(matNo: string) {
+    const headers = this.getHeaders();
+    return this.http.get(`${this.baseUrl}/student/?search=${matNo}`, { headers });
+  }
+
   filterStudent(hostelId: number) {
     const headers = this.getHeaders();
     return this.http.get(`${this.baseUrl}/student/?hostelID=${hostelId}`, { headers });
@@ -49,13 +54,34 @@ export class YctServiceService {
     formData.append('email', body?.email)
     formData.append('firstName', body?.firstName)
     formData.append('gender', body?.gender)
-    formData.append('hostelID', body?.hostelID)
+    formData.append('roomID', body?.roomID)
     formData.append('lastName', body?.lastName)
     formData.append('matricNo', body?.matricNo)
     formData.append('phoneNumber', body?.phoneNumber)
+    formData.append('school', body?.school)
+    formData.append('level', body?.level)
     formData.append('profilePicture', body?.profilePicture)
     const headers = this.getHeaders();
     return this.http.post(`${this.baseUrl}/register/`, formData, { headers });
+  }
+
+  updateStudent(body: any) {
+    const formData = new FormData()
+    if(body?.accountType) formData.append('accountType', body?.accountType)
+    if(body?.department) formData.append('department', body?.department)
+    if(body?.email) formData.append('email', body?.email)
+    if(body?.firstName) formData.append('firstName', body?.firstName)
+    if(body?.gender) formData.append('gender', body?.gender)
+    if(body?.roomID) formData.append('roomID', body?.roomID)
+    if(body?.lastName) formData.append('lastName', body?.lastName)
+    if(body?.matricNo) formData.append('matricNo', body?.matricNo)
+    if(body?.phoneNumber) formData.append('phoneNumber', body?.phoneNumber)
+    if(body?.school) formData.append('school', body?.school)
+    if(body?.level) formData.append('level', body?.level)
+    if(body?.profilePicture) formData.append('profilePicture', body?.profilePicture)
+
+    const headers = this.getHeaders();
+    return this.http.put(`${this.baseUrl}/student/${body?.id}/`, formData, { headers });
   }
 
 
@@ -75,10 +101,46 @@ export class YctServiceService {
     return this.http.post(`${this.baseUrl}/hostels/`, body, { headers });
   }
 
+  updateHostel(body: any) {
+    const { name } = body
+    const payload = {
+      name
+    }
+    const headers = this.getHeaders();
+    return this.http.put(`${this.baseUrl}/hostels/${body?.id}/`, payload, { headers });
+  }
+
   deleteHostel(id: number) {
     const headers = this.getHeaders();
     return this.http.delete(`${this.baseUrl}/hostels/${id}`, { headers });
   }
+
+  // Rooms Service Request
+  getRooms() {
+    const headers = this.getHeaders();
+    return this.http.get(`${this.baseUrl}/rooms/`, { headers });
+  }
+
+  createRoom(body: any) {
+    const headers = this.getHeaders();
+    return this.http.post(`${this.baseUrl}/rooms/`, body, { headers });
+  }
+
+  updateRoom(body: any) {
+    const { hostel, name } = body
+    const payload = {
+      hostel,
+      name
+    }
+    const headers = this.getHeaders();
+    return this.http.put(`${this.baseUrl}/rooms/${body?.id}/`, payload, { headers });
+  }
+
+  deleteRoom(id: number) {
+    const headers = this.getHeaders();
+    return this.http.delete(`${this.baseUrl}/rooms/${id}`, { headers });
+  }
+
 
   // Admin Service Request
   getAdmins() {

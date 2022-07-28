@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import html2canvas from 'html2canvas';
 import { ToastrService } from 'ngx-toastr';
 import { LoadingStateService } from 'src/app/loading-state.service';
@@ -26,23 +27,29 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     department: '',
     matricNo: '',
     accountType: 'student',
-    hostelID: '',
+    roomID: '',
+    school: '',
+    level: '',
     profilePicture: ''
   }
 
   viewedStudent: any = {}
   registeredStudent : any = {}
 
+  rooms: any = []
   hostels: any = []
   students: any = []
   next: string = '';
 
   constructor(private yctService: YctServiceService,
               private toastr: ToastrService,
+              private router: Router,
+              private route: ActivatedRoute,
               private loadingService: LoadingStateService) { }
 
   ngOnInit(): void {
-    this.getHostels()
+    this.getHotels()
+    this.getRooms()
     this.getStudents()
   }
 
@@ -70,7 +77,6 @@ export class StudentsComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.log('Hostel Err: ', err);
-        this.toastr.error(err.detail)
         if(all) this.loadingService.hideLoading()
       }
     })
@@ -80,13 +86,23 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     this.getStudents('all', this.next)
   }
   
-  getHostels() {
+  getRooms() {
+    this.yctService.getRooms().subscribe({
+      next: (data: any) => {
+        this.rooms = data?.results
+      },
+      error: (err) => {
+        console.log('Hostel Err: ', err);
+      }
+    })
+  }
+
+  getHotels() {
     this.yctService.getHostels().subscribe({
       next: (data: any) => {
         this.hostels = data?.results
       },
       error: (err) => {
-        this.toastr.error(err.detail)
         console.log('Hostel Err: ', err);
       }
     })
@@ -111,7 +127,6 @@ export class StudentsComponent implements OnInit, AfterViewInit {
         this.loadingService.hideLoading()
       },
       error: (err) => {
-        this.toastr.error(err.detail)
         console.log('Hostel Err: ', err)
         this.loadingService.hideLoading()
       }
@@ -157,7 +172,6 @@ export class StudentsComponent implements OnInit, AfterViewInit {
         this.getStudents()
       },
       error: (err) => {
-        this.toastr.error(err.detail)
         console.log('Student Register Err: ', err);
         this.loadingService.hideLoading()
       }
@@ -167,6 +181,10 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   viewStudent(student: any) {
     console.log('Viewed Student: ', student);
     this.viewedStudent = student
+  }
+
+  editStudent(student: any) {
+    this.router.navigate(['edit'], { relativeTo: this.route, state: { student } })  
   }
 
   deleteStudent(id: number) {
@@ -183,7 +201,6 @@ export class StudentsComponent implements OnInit, AfterViewInit {
           this.getStudents('all')
         },
         error: (err) => {
-          this.toastr.error(err.detail)
           console.log('Student Register Err: ', err);
           this.loadingService.hideLoading()
         }
@@ -197,10 +214,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     this.studentData.email = ''
     this.studentData.gender = ''
     this.studentData.phoneNumber = ''
-    this.studentData.profilePicture = ''
     this.studentData.matricNo = ''
-    this.studentData.hostelID = ''
+    this.studentData.roomID = ''
     this.studentData.department = ''
+    this.studentData.school = ''
+    this.studentData.level = ''
     this.studentData.profilePicture = ''
   }
 

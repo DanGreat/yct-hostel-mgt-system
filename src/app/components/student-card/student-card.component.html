@@ -8,7 +8,9 @@
                     <p><strong>Mat No.:</strong>{{  studentData?.matric_no | uppercase }}</p>
                     <p><strong>Dept.:</strong> {{ studentData?.department | titlecase }}</p>
                     <p><strong>Gender:</strong> {{ studentData?.gender | titlecase }}</p>
-                    <p><strong>Hostel:</strong> {{ studentData?.hostel | titlecase }}</p>
+                    <p><strong>Level:</strong> {{ studentData?.level | uppercase }}</p>
+                    <p><strong>Hostel:</strong> {{ studentData?.room?.hostel_name | titlecase }}</p>
+                    <p><strong>Room:</strong> {{ studentData?.room?.room_name | titlecase }}</p>
                 </div>
             </div>
     

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoadingStateService } from 'src/app/loading-state.service';
 import { YctServiceService } from 'src/app/yct-service.service';
@@ -12,9 +13,13 @@ export class HostelsComponent implements OnInit {
 
   hostels: any = {}
   hostel = ''
+  id = null
+  editedHostel: any = {}
 
   constructor(private yctService: YctServiceService,
               private toastr: ToastrService,
+              private router: Router,
+              private route: ActivatedRoute,
               private loadingService: LoadingStateService) { }
 
   ngOnInit(): void {
@@ -28,7 +33,6 @@ export class HostelsComponent implements OnInit {
         this.hostels = data?.results
       },
       error: (err) => {
-        this.toastr.error(err.detail)
         console.log('Hostel Err: ', err);
       }
     })
@@ -36,22 +40,47 @@ export class HostelsComponent implements OnInit {
 
   addHostel() {
     this.loadingService.showLoading()
+
     const body = {
       name: this.hostel
     }
-    this.yctService.createHostel(body).subscribe({
-      next: (data) => {
-        this.loadingService.hideLoading()
-        console.log('Hostel: ', data);
-        this.toastr.success('Hostel Created Successfully')
-        this.getHostels()
-      },
-      error: (err) => {
-        this.toastr.error(err.detail)
-        this.loadingService.hideLoading()
-        console.log('Hostel Err: ', err);
-      }
-    })
+
+    if(this.id) {
+      this.yctService.updateHostel(this.editedHostel).subscribe({
+        next: (data) => {
+          this.loadingService.hideLoading()
+          console.log('Hostel: ', data);
+          this.id = null
+          this.toastr.success('Hostel Updated Successfully')
+          this.getHostels()
+        },
+        error: (err) => {
+          this.id = null
+          this.loadingService.hideLoading()
+          console.log('update Hostel Err: ', err);
+        }
+      })
+    } else {
+      this.yctService.createHostel(body).subscribe({
+        next: (data) => {
+          this.loadingService.hideLoading()
+          console.log('Hostel: ', data);
+          this.toastr.success('Hostel Created Successfully')
+          this.getHostels()
+        },
+        error: (err) => {
+          this.loadingService.hideLoading()
+          console.log('Hostel Err: ', err);
+        }
+      })
+
+    }
+   
+  }
+
+  editHostel(hostel: any) {
+    this.id = hostel?.id
+    this.editedHostel = hostel
   }
 
   deleteHostel(id: number) {
@@ -66,12 +95,15 @@ export class HostelsComponent implements OnInit {
           this.getHostels()
         },
         error: (err) => {
-          this.toastr.error(err.detail)
           console.log('Student Register Err: ', err);
           this.loadingService.hideLoading()
         }
       })
     }
+  }
+
+  addRooms() {
+    this.router.navigate(['rooms'], { relativeTo: this.route })
   }
 
 }

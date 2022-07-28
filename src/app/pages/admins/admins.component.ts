@@ -60,7 +60,6 @@ export class AdminsComponent implements OnInit {
       },
       error: (err) => {
         this.loadingService.hideLoading()
-        this.toastr.error(err?.detail)
         console.log('Admin Register Err: ', err);
       }
     })
@@ -80,7 +79,6 @@ export class AdminsComponent implements OnInit {
         },
         error: (err) => {
           console.log('Student Register Err: ', err);
-          this.toastr.error(err?.detail)
           this.loadingService.hideLoading()
         }
       })

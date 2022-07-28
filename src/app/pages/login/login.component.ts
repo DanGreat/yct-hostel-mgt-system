@@ -25,14 +25,12 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log('Cred: ', this.credentials);
     this.loadingService.showLoading()
     this.yctService.login(this.credentials).subscribe({
       next: (data: any) => {
         this.loadingService.hideLoading()
         
         if(data?.token) {
-
           const dashboardOverview = {
             totalStudents: data?.total_student,
             totalAdmins: data?.total_admin,
@@ -50,12 +48,11 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('dashboard', JSON.stringify(dashboardOverview))
           localStorage.setItem('user', JSON.stringify(userData))
 
-        }
+          this.router.navigate(['/dashboard'])
+        } else this.toastr.warning('You are unauthenticated')        
         
-        this.router.navigate(['/dashboard'])
       },
       error: (err) => {
-        this.toastr.error(err.detail)
         this.loadingService.hideLoading()
         console.log('Login Err: ', err);
       }

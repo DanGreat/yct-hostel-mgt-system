@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { LoadingStateService } from 'src/app/loading-state.service';
 import { YctServiceService } from 'src/app/yct-service.service';
 
@@ -13,7 +12,6 @@ export class DashboardComponent implements OnInit {
   dashboardData: any = {}
 
   constructor(private yctService: YctServiceService,
-              private toastr: ToastrService,
               private loadingService: LoadingStateService) {}
 
   ngOnInit(): void {
@@ -31,7 +29,6 @@ export class DashboardComponent implements OnInit {
       },
       error: (err) => {
         this.loadingService.hideLoading()
-        this.toastr.error(err?.detail)
       }
     })
   }
